@@ -16,7 +16,7 @@ class Solution {
         int m = grid[0].length;
         while(!q.isEmpty()) {
             int row = q.peek().first;
-            int col = q.peek().second;
+            int col = q.peek().second; 
             q.remove();
             
             for(int delRow = -1; delRow <=1; delRow++) {
