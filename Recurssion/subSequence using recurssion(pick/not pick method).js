@@ -1,8 +1,8 @@
-// pick not pick recureesion pattern
+// pick not pick recureesion pattern subsets1
 
 const sS = (arr,i,sum,ans) => {
     if (i == arr.length) {
-        ans.push(sum)
+        ans.push(sum.slice())
         return 
     }
     sS(arr,i + 1,sum + arr[i],ans)

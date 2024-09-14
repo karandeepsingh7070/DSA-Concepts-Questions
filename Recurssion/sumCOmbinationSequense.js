@@ -1,7 +1,7 @@
 const Cs = (i,arr,target,ans,fs) => {
     if(i == arr.length) {
         if (target == 0) {
-            ans.push(fs)
+            ans.push(fs.slice())
         }
         return
     }
