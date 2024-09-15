@@ -23,6 +23,7 @@ const findPermutationSequence = (arr) => {
 }
 console.log(findPermutationSequence([1,2,3]))
 
+// time comeplexity n! and deep copy of every data structure will take another n -> n! * n
 // ans
 [
     [ 1, 2, 3 ],
