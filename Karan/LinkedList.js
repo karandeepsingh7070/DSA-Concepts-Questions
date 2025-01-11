@@ -218,3 +218,52 @@ var deleteMiddle = function(head) {
     deletingNode.next = null
     return head
 };
+
+// #9 Sort LL 148
+
+var findMiddleNode = function(head) {
+    let slow = head
+    let fast = head.next
+    while(fast != null && fast.next != null) {
+        slow = slow.next
+        fast = fast.next.next
+    }
+    return slow
+}
+var mergeList = function(leftHead, rightHead) {
+    let dummyNode = new ListNode(-1); // Dummy node for the merged list
+    let temp = dummyNode;
+
+    // Merge two sorted lists
+    while (leftHead !== null && rightHead !== null) {
+        if (leftHead.data <= rightHead.data) {
+            temp.next = leftHead;
+            leftHead = leftHead.next;
+        } else {
+            temp.next = rightHead;
+            rightHead = rightHead.next;
+        }
+        temp = temp.next;
+    }
+
+    // Append remaining nodes from either list
+    if (leftHead !== null) temp.next = leftHead;
+    else temp.next = rightHead;
+
+    return dummyNode.next; // Return the merged list
+};
+var sortList = function(head) {
+    if (head === null || head.next === null) return head; // Base case 
+
+    // Split the list into two halves
+    let middleNode = findMiddleNode(head);
+    let rightHead = middleNode.next;
+    middleNode.next = null;
+
+    // Recursively sort the left and right halves
+    let leftHead = sortList(head);
+    rightHead = sortList(rightHead);
+
+    // Merge the sorted halves
+    return mergeList(leftHead, rightHead);
+};
