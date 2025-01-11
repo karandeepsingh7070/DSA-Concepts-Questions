@@ -109,3 +109,76 @@ var isPalindrome = function(head) {
     reverse(newHead)
     return true
 };
+
+// #6 Odd Even Linked List - leetcode 328
+var oddEvenList = function(head) {
+    if(head == null || head.next == null) return head
+    let odd = head
+    let even = head.next
+    let evenFirstNode = head.next
+    while(even !=null && even.next != null) {
+        odd.next = odd.next.next
+        even.next = even.next.next
+        even = even.next // remember you have already pointed odd and even next to updated positions
+        odd = odd.next
+    }
+    odd.next = evenFirstNode
+    return head
+};
+
+// #7 Remove Nth Node From End of List - leetcode 19
+//BRUTE
+
+var removeNthFromEnd = function(head, n) {
+    if(head == null) return head
+    let cnt = 0
+    let current = head
+    while(current != null) {
+        cnt++
+        current = current.next
+    }
+    if(cnt == n) {
+        // removes head
+        let newHead = head.next
+        head.next = null
+        return newHead
+    }
+    let res = cnt - n
+    current = head
+    while(current != null) {
+        res--
+        if(res == 0) break
+        current = current.next
+    }
+    let deletingNode = current.next
+    current.next = current.next.next
+    deletingNode.next = null
+    return head
+};
+
+var removeNthFromEnd = function(head, n) {
+    if(head == null) return head
+    let slow = head
+    let fast = head
+    // let cnt = 0
+    // while(cnt == n) {
+    //     cnt++
+    //     fast = fast.next
+    // }
+    for(let i = 0; i< n; i++) {
+        fast = fast.next
+    }
+    if(fast == null) { //asking to delete head i.e n = no of nodes
+        let newHead = head.next
+        head.next = null
+        return newHead
+    }
+    while(fast.next != null) {
+        slow = slow.next
+        fast = fast.next
+    }
+    let deletingNode = slow.next
+    slow.next = slow.next.next
+    deletingNode.next = null
+    return head
+};
