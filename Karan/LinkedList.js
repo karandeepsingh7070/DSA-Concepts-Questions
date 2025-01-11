@@ -182,3 +182,39 @@ var removeNthFromEnd = function(head, n) {
     deletingNode.next = null
     return head
 };
+
+// #8 Delete the Middle Node of a Linked List - leetcode 2095
+
+var deleteMiddle = function(head) {
+    if(head == null) return head
+    if(head.next == null) return null
+    let slow = head
+    let fast = head.next // slight change of tortoise and here solution, instead of starting form head, start from next node, it'll help with condition fat.next.next
+    while(fast !=null && fast.next != null) {
+        if(fast.next.next) {
+        slow = slow.next
+        fast = fast.next.next
+        }else {
+            break
+        }
+    }
+    let deletingNode = slow.next
+    slow.next = slow.next.next
+    deletingNode.next = null
+    return head
+};
+// alternate instad of starting of fast from head. nest, skip one step of slow
+var deleteMiddle = function(head) {
+    if(head == null) return head
+    if(head.next == null) return null
+    let slow = head
+    let fast = head.next.next
+    while(fast !=null && fast.next != null) {
+        slow = slow.next
+        fast = fast.next.next
+    }
+    let deletingNode = slow.next
+    slow.next = slow.next.next
+    deletingNode.next = null
+    return head
+};
