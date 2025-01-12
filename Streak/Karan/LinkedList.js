@@ -267,3 +267,34 @@ var sortList = function(head) {
     // Merge the sorted halves
     return mergeList(leftHead, rightHead);
 };
+
+// #10 Sort a LL with 0's,1's & 2's
+class Solution {
+    // Function to sort a linked list of 0s, 1s and 2s.
+    segregate(head) {
+        let zeroHead = new Node(-1)
+        let oneHead = new Node(-1)
+        let twoHead = new Node(-1)
+        let zero = zeroHead
+        let one = oneHead
+        let two = twoHead
+        let temp = head
+        while(temp) {
+            if(temp.data == 0) {
+                zero.next = temp
+                zero = temp
+            }else if (temp.data == 1) {
+                one.next = temp
+                one = temp
+            }else {
+                two.next = temp
+                two = temp
+            }
+            temp = temp.next
+        }
+        two.next = null
+        zero.next = oneHead.next ? oneHead.next : twoHead.next
+        one.next = twoHead.next 
+        return zeroHead.next
+    }
+}
