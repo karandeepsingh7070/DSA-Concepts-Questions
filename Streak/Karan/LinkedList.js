@@ -314,3 +314,90 @@ var getIntersectionNode = function(headA, headB) {
     }
     return t1 
 };
+
+// # 12 Add 1 to a Linked List Number
+
+// BRUTE  - //***NOT WORKING***
+class Solution {
+    reverse(node) {
+        if(node == null || node.next == null) return node
+        let reverseHead = this.reverse(node.next)
+        let front = node.next
+        front.next = node
+        node.next = null
+        return reverseHead
+    }
+    addOne(node) {
+        if(head == null) return head
+        let revHead = this.reverse(node)
+        let temp = revHead
+        let carry = 1
+        while(temp != null) {
+            temp.data = temp.data + carry
+            if(temp.data == 10) {
+                temp.data = 0
+                carry = 1
+            }else {
+                carry = 0
+                break;
+            }
+            temp = temp.next
+        }
+        if(carry == 1) {
+            let newHead = new Node(1);
+            newHead.next = reverseHead; // Attach the new node at the front
+            revHead = newHead;
+        }
+        return this.reverse(revHead)
+    }
+}
+
+// WORKING
+class Solution {
+    carryHelper(head) {
+        if(head == null) return 1
+        let carry = this.carryHelper(head.next)
+        head.data = head.data + carry
+        if(head.data < 10) {
+            return 0
+        }
+        head.data = 0
+        return 1
+        }
+    addOne(node) {
+        let carry = this.carryHelper(node)
+        if(carry == 1) {
+            let newHead = new Node(carry)
+            newHead.next = node
+            return newHead
+        }
+        return node
+    }
+}
+
+// #13  Add Two Numbers - leetcode 2
+
+var addTwoNumbers = function(l1, l2) {
+    let dummyNode = new ListNode(-1)
+    let curr = dummyNode
+    let t1 = l1
+    let t2 = l2
+    let carry = 0
+    while(t1 != null || t2 != null) {
+        let sum = carry
+        if(t1) sum = sum + t1.val
+        if(t2) sum = sum + t2.val
+        let digit = Math.floor(sum % 10)
+        carry = Math.floor(sum / 10)
+        let newNode = new ListNode(sum % 10)
+        curr.next = newNode
+        curr = newNode
+        if(t1) t1 = t1.next
+        if(t2) t2 = t2.next
+    }
+    if(carry > 0) {
+        let newNode = new ListNode(carry)
+        curr.next = newNode
+    }
+    return dummyNode.next
+};
