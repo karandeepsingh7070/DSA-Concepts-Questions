@@ -401,3 +401,83 @@ var addTwoNumbers = function(l1, l2) {
     }
     return dummyNode.next
 };
+
+// #14 Delete all occurrences of a given key in a doubly linked list
+class Solution {
+
+    deleteAllOccurOfX(head_ref, key) {
+        let temp = head_ref
+        while(temp != null) {
+            if(temp.data == key) {
+                if(temp == head_ref) {
+                // head element
+                let newHead = temp.next
+                head_ref = newHead
+                head_ref.prev = null
+                }else {
+                    let prevNode = temp.prev
+                    let nextNode = temp.next
+                    if (prevNode) prevNode.next = nextNode
+                    if (nextNode) nextNode.prev = prevNode
+                }
+            }
+            temp = temp.next
+        }
+        return head_ref
+    }
+}
+
+// #15 Find pairs with given sum in doubly linked list
+class Solution {
+    // Function to find pairs in the linked list with the given sum
+    returnLastNode(head) {
+        let lastNode = head
+        while(lastNode.next != null) {
+            lastNode = lastNode.next
+        }
+        return lastNode
+    }
+    findPairsWithGivenSum(head, target) {
+        if (!head || !head.next) return [];
+        let lNode = head
+        let rNode = this.returnLastNode(head)
+        let ans = []
+        while(lNode != null && rNode != null && lNode.data < rNode.data) { //it's a sorted list so, right should be greater than left
+            let sum = lNode.data + rNode.data
+            if(sum == target) {
+                ans.push([lNode.data,rNode.data])
+                lNode = lNode.next
+                rNode = rNode.prev
+            }else if(sum < target) {
+                lNode = lNode.next
+            }else {
+                rNode = rNode.prev
+            }
+        }
+        return ans
+    }
+}
+
+// #16 Remove duplicates from a sorted doubly linked list
+// TIME LIMIT EXCEEDS
+class Solution {
+    /**
+     * Function to remove duplicates from unsorted linked list.
+     * @param {Node} head
+     * @returns {Node}
+     */
+     removeDuplicates(head) {
+         if(head == null) return head
+         let temp = head
+         while(temp.next != null) {
+            let nextNode = temp.next
+            while(nextNode !== null && nextNode.data == temp.data) {
+               if(nextNode.next) nextNode = nextNode.next
+            }
+            temp.next = nextNode
+            nextNode.prev = temp
+            temp = temp.next
+         }
+         return head
+     }
+} 

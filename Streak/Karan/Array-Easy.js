@@ -34,17 +34,4 @@ var removeDuplicates = function(nums) {
         k++
     })
     return sSet.size
-
-
-
-    // let uniqueElement = new Set()
-    // for(let i = 0; i < nums.length; i++) {
-    //     uniqueElement.add(nums[i])
-    // }
-    // let k = 0
-    // for (const item of uniqueElement) {
-    //     nums[k] = item
-    //     k++
-    //     }
-    // return uniqueElement.size
 };
