@@ -50,7 +50,32 @@ var removeDuplicates = function(arr) {
     return i+1
 };
 
-// #5 Left Rotate an array by one place
+// #5 Left Rotate an array by one place | O(N)
+function rotate(nums) {
+    let temp = nums[0]
+    for(let i=1; i<=nums.length-1; i++){
+        nums[i-1] = nums[i]
+    }
+    nums[nums.length-1] = temp
+};
 
 
 // #6 Left rotate an array by D places
+var rotate = function(nums, k) {
+    const len = nums.length-1
+    // decide rotation
+    const rotation = k % len
+    // save in temp
+    const temp = []
+    for(let i=1; i<=k-1; i++){
+        temp[i] = nums[i]
+    }
+    // shifting
+    for(i=k; i<=len; i++){
+        nums[i-k] = nums[k]
+    }
+    // put back temp
+    for(i=len-k; i<=len; i++){
+        nums[i] = temp[i-(len-k)]
+    }
+};
