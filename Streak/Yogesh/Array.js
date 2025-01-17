@@ -188,3 +188,51 @@ var union = function() {
 
 // Optimal | TC: O(N) | SC: O(1)
 // >> 2 pointer appoach as the array are sorted
+
+
+
+// #9B Intersection of two sorted in an array (i.e element that are present in both array)
+// Brute | TC O(N square) | SC O(N)
+// for every element of arr1 >> traverse the arr2 >> by making a check on visible array
+// So there will be 2 loop one inside another
+// Condition of second loop >> if(arr[i] === arr[j] && vis[j] === 0) >> save element in intersection array
+// as the array are sorted >> so if at any monent arr[j] > arr[i] break
+
+// Optimal | TC O(n+n) | SC O(1)
+// 2 pointer approach because the array is sorted
+// if both pointer array values are same then just move increment both i.e i++ & j++ & save the value in intersection array
+// if both pointer array values are different then just increment i >> i.e i++ >> if a[i] < b[j] 
+// else increment j >> i.e j++ >> if a[i] > b[j]
+
+
+
+// #10 Find missing number in an array
+// Brute | TC O(n square) | SC O(1)
+// 2 loop >> one inside another >> compare value of i with every value of j 
+// maintain a flag = -1 in the outer loop
+// if value is found >> inner loop break & flag =1 break
+// in case when value will not found then flag value will be -1 >> So, that i value is missing number
+
+// Better | TC O(2N) | SC O(N)
+// using Hashing 
+// Use a Hash hasving all zeros & traverse a array
+// for every value i.e arr[i] >> update the hash index of that value to 1
+// After marking all value at hash >> just traverse the hash
+// the hash INDEX which has 0 is the missing value
+
+// Optimal: It has 2 optimal solution >> 1. using sum >> 2. using XOR
+// Using Sum Approach | TC O(N) | SC O(1)
+// >> Iterate the array & get sum of all value 
+// >> Also, calculate the sum using formula (n + (n+1)) / 2
+// >> the differnce btw above 2 sum is the missing value
+
+//Using XOR (a^a = 0 i.e xor of 2 same number is zero) | TC O(N) | SC O(1)
+// NOTE: XOR approch is better because for the case of Sum apporch for 10^2 >> we will be needing the long int 
+// >> But for XOR approach never exceed max number
+
+
+// #11 Maximum Consecutive Ones
+// Optimal | TC O(N) | SC O(1)
+// Maintain a count & maxCount while iterating a loop 
+
+
