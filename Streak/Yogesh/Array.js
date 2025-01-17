@@ -60,22 +60,131 @@ function rotate(nums) {
 };
 
 
-// #6 Left rotate an array by D places
+// #6 Left rotate an array by D places | TC = O(N+rotation) i.e o(N) | SC = O(rotation) 
+// Brute
 var rotate = function(nums, k) {
-    const len = nums.length-1
+    const len = nums.length
     // decide rotation
     const rotation = k % len
-    // save in temp
+    // save in temp till k
     const temp = []
-    for(let i=1; i<=k-1; i++){
+    for(let i=0; i<rotation; i++){
         temp[i] = nums[i]
     }
     // shifting
-    for(i=k; i<=len; i++){
-        nums[i-k] = nums[k]
+    for(i=rotation; i<len; i++){
+        nums[i-rotation] = nums[i]
     }
     // put back temp
-    for(i=len-k; i<=len; i++){
-        nums[i] = temp[i-(len-k)]
+    for(i=len-rotation; i<len; i++){
+        nums[i] = temp[i-(len-rotation)]
     }
 };
+// Optimal  | TC = 0(2N) | SC = O(1) |  (save space complexity) (REVERSE(till roation) + REVERSE(rotation + arrLen) -> REVERSE(the new create reverse array))
+function reverse(arr, startIndex ,endIndex){
+    while(startIndex<=endIndex){
+        let temp = arr[startIndex]
+        arr[startIndex] = arr[endIndex]
+        arr[endIndex] = temp
+        startIndex++
+        endIndex--
+    }
+}
+var rotateLeft = function(nums, k) {
+    const len = nums.length
+    // decide rotation
+    const rotation = k % len
+    // reverse 0 till rotation-1
+    // reverse rotation-1 till array length
+    // reverse the modified array
+    reverse(nums,0,rotation-1)
+    reverse(nums,rotation,len-1)
+    reverse(nums,0,len-1)
+};
+// Think about right shift by n position
+
+
+// #7 Move Zeros to end  
+// Brute | TC: O(2N) | SC: O(N) 
+// >> store non zero in temp arr by iterating complete array (startIndex: 0 & endIndex: arrSize)
+// >> Put non zero val at start of arr (startIndex: 0 & endIndex: tempSize)
+// >> Put zero at the end (startIndex: tempSize & endIndex: arrSize)
+let moveZeroes = function(nums) {
+    const len = nums.length
+    let temp = []
+    for(let i=0; i<len; i++){
+        if(nums[i] != 0){
+            temp.push(nums[i])
+        }
+    }
+    const nonZero = temp.length 
+    for(i=0; i<nonZero; i++){
+        nums[i] = temp[i]
+    }
+    for(i=nonZero; i<len; i++){
+        nums[i] = 0
+    }
+};
+// Optimal: 2 pointer approach | TC: O(N) | SC: O(1)
+// >> Get first zero index by looping array & break when you find it.
+// >> If you didn't find zero return (i.e when j = -1 after traversing array)
+// >> Start looping using 2 pointer form first zero & swap when zero occur
+let moveZero = function(nums) {
+    const len = nums.length
+    let j = -1   // for zero index
+    // find the first zero index
+    for(let i=0; i<len; i++){
+        if(nums[i] === 0){
+            j = i
+            break
+        }
+    }
+    // if no zero index then return
+    if(j === -1) return
+    // swap non zero with zero, starting from first zero index
+    for(i=j+1; i<len; i++){
+        if(nums[i]!==0){
+            let temp = nums[i]
+            nums[i] = nums[j]
+            nums[j] = temp
+            j++
+        }
+    }
+};
+
+// #8 Linear Search
+function linearSearch(arr, k) {
+    for(let i=0; i<arr.length; i++){
+        if(arr[i] === k) return true
+    }
+    return false
+}
+
+// #9 Union of 2 Sorted array (i.e add 2 array without duplicate values)
+// Brute | TC: O(NlogN) (i.e logn is time complexity of set) | SC: O(N1+N2) 
+// >> Put them in SET
+var union = function() {
+    const arr1 = [1,3,3,4,5]
+    const arr2 = [1,1,4,6,7]
+    const mySet = new Set();
+    let union = []
+    
+    for(let i=0; i < arr1.length; i++){
+        mySet.add(arr1[i])
+    }
+    for(let i=0; i < arr2.length; i++){
+        mySet.add(arr2[i])
+    }
+    union = Array.from(mySet);
+    // for(i=0; i<=mySet.length; i++){
+    //     union.push(mySet[i] || 0)
+    // }
+    console.log("arr1", arr1)
+    console.log("arr2", arr2)
+    console.log("mySet", mySet)
+    console.log("union", union)
+};
+
+
+// Optimal | TC: O(N) | SC: O(1)
+// >> 2 pointer appoach as the array are sorted
