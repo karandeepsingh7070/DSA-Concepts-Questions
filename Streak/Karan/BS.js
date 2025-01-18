@@ -146,3 +146,46 @@ var minEatingSpeed = function(piles, h) {
     }
     return ans
 };
+
+// #4 Minimum Number of Days to Make m Bouquets - leetcode 1482
+var possibleNoOfBouqe = function(bloomDay,day,m,k) {
+    let bouqeCnt = 0
+    let cnt = 0
+    for(let i = 0; i < bloomDay.length; i++) {
+        if(bloomDay[i] <= day) { // check if on given day that perticular flower is bloomed or not.
+            cnt++
+        }else {
+            let possibleBouqes = Math.floor(cnt/k)
+            bouqeCnt += possibleBouqes
+            cnt = 0
+        }
+    }
+        bouqeCnt += Math.floor(cnt/k)
+        return bouqeCnt
+} 
+var calMiniAndMaxi = function(bloomDay) {
+    let data = {mini : bloomDay[0], maxi : -1}
+    for(let i = 0; i< bloomDay.length; i++) {
+        data.maxi = Math.max(bloomDay[i],data.maxi)
+        data.mini = Math.min(bloomDay[i],data.mini)
+    }
+    return data
+}
+var minDays = function(bloomDay, m, k) { // m = no. of bouqe, k = no. of flowers in a bouqe
+    let totalFlowers = bloomDay.length
+    if(totalFlowers < m*k) return -1 // incase flowers are nor enough to complete all bouqe
+    let low = calMiniAndMaxi(bloomDay).mini
+    let high = calMiniAndMaxi(bloomDay).maxi
+    let ans = high
+    while(low <= high) {//range to check in
+    let mid = Math.floor((low+high)/2)
+    let bouqeCnt = possibleNoOfBouqe(bloomDay,mid,m,k)
+    if(bouqeCnt >= m) {
+        ans = mid
+        high = mid - 1
+    }else {
+        low = mid + 1
+    }
+    }
+    return ans
+};
