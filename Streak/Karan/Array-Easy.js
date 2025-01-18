@@ -81,3 +81,115 @@ var moveZeroes = function(nums) {
         }
     }
 }
+
+// #6 Find Union
+class Solution {
+    // Function to return a list containing the union of the two arrays.
+    findUnion(a, b) {
+        let unionArr = []
+        let i = 0
+        let j = 0
+        while(i < a.length && j < b.length) {
+            if(a[i] <= b[j]) {
+                if(unionArr.length === 0 || unionArr[unionArr.length - 1] != a[i]) {
+                unionArr.push(a[i])
+                }
+                i++
+            }else {
+                if(unionArr.length === 0 || unionArr[unionArr.length - 1] != b[j]) {
+                unionArr.push(b[j])
+                }
+                j++
+            }
+        }
+            while(i < a.length) {
+                if(unionArr.length === 0 || unionArr[unionArr.length - 1] != a[i]) {
+                unionArr.push(a[i])
+                }
+                i++
+            }
+            while(j < b.length) {
+                if(unionArr.length === 0 || unionArr[unionArr.length - 1] != b[j]) {
+                unionArr.push(b[j])
+                }
+                j++
+            }
+        
+        return unionArr
+    }
+}
+
+// #7 Missing Number
+//BRUTE
+var missingNumber = function(nums) {
+    let totalSum = 0
+    let originalSum = 0
+    for(let i = 0; i <= nums.length; i++) {
+        totalSum += i
+        if (i < nums.length) {
+        originalSum = originalSum + nums[i]
+    }
+    }
+    return totalSum - originalSum
+}
+//OPTIMAL
+var missingNumber = function(nums) {
+    let xorVal1 = 0 // totalSum
+    let xorVal2 = 0 //originalSUm
+
+    for(let i = 0; i<= nums.length; i++) {
+        xorVal1 = xorVal1^i
+        if(i < nums.length){
+        xorVal2 = xorVal2^nums[i]
+        }
+    }
+    return xorVal1^xorVal2
+}
+
+// #8 Max Consecutive Ones
+
+var findMaxConsecutiveOnes = function(nums) {
+    let cnt = 0
+    let max = Number.MIN_SAFE_INTEGER
+    for(let i = 0; i< nums.length; i++) {
+        if(nums[i] == 1) {
+            cnt++
+            max = Math.max(cnt,max)
+        }else {
+            cnt = 0
+        }
+    }
+        return max
+}
+
+// #9 Single Element
+var singleNumber = function(nums) {
+    let singleEl = 0
+    for(let i = 0; i< nums.length; i++) {
+         singleEl = singleEl^nums[i]
+    }
+    return singleEl
+}
+
+// #10 Longest Subarray with Sum K
+//OPTIMAL for +ve's
+class Solution {
+    longestSubarray(arr, k) {
+        let i = 0 //left
+        let j = 0 //right
+        let maxCnt = 0
+        let sum = 0
+        while(j < arr.length) {
+            while(i <= j && sum > k) {
+                sum -= arr[i]
+                i++
+            }
+            if(sum == k) {
+                maxCnt = Math.max(maxCnt,j - i + 1)
+            }
+            sum += arr[j]
+            j++
+        }
+        return maxCnt
+    }
+}
