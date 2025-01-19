@@ -189,3 +189,84 @@ var minDays = function(bloomDay, m, k) { // m = no. of bouqe, k = no. of flowers
     }
     return ans
 };
+
+// #5 Find the Smallest Divisor Given a Threshold - leetcode 1283
+var possibleDivisorCnt = function(nums,divisor) {
+    let divisorCnt = 0
+    for(let i = 0; i < nums.length; i++) {
+        divisorCnt += Math.ceil(nums[i]/divisor)
+    }
+    return divisorCnt
+}
+var largestNum = function(nums) {
+    let largest = -1
+    for(let i = 0; i < nums.length; i++) {
+        if(nums[i] > largest) {
+            largest = nums[i]
+        }
+    }
+    return largest
+}
+var smallestDivisor = function(nums, threshold) {
+    if(!nums.length) return -1
+    let low = 1 // or either can be the lowest in arr
+    let high = largestNum(nums)
+    let ans = high
+    while(low <= high) {
+        let mid = Math.floor((low+high)/2)
+        let divisorCnt = possibleDivisorCnt(nums,mid)
+        if(divisorCnt <= threshold) {
+            ans = mid
+            high = mid - 1
+        }else{
+            low = mid + 1
+        }
+    }
+    return ans
+};
+
+// #6 Capacity To Ship Packages Within D Days - leetcode 1011
+var findTotalCapacity = function(nums) {
+    let sum = 0
+    for(let i = 0; i< nums.length;i++) {
+        sum+=nums[i]
+    }
+    return sum
+}
+var calDaysCnt = function(weights,loadingCapacity) {
+    let days = 1
+    let load = 0
+    let capacity = loadingCapacity
+    for(let i = 0; i< weights.length; i++) {
+        if(load + weights[i] > capacity) {
+            days = days + 1
+            load = weights[i]
+        }else {
+            load += weights[i]
+        }
+    }
+    return days
+}
+var findMinCapacity = function(weights) {
+    let maxi = weights[0]
+    for(let i = 0; i < weights.length; i++) {
+        maxi = Math.max(maxi,weights[i])
+    }
+    return maxi
+}
+var shipWithinDays = function(weights, days) {
+    let high = findTotalCapacity(weights)
+    let low = findMinCapacity(weights)
+    let ans = high
+    while(low<=high) {
+        let mid = Math.floor((low+high)/2)
+        let daysCnt = calDaysCnt(weights,mid)
+        if(daysCnt <= days) {
+            ans = mid
+            high = mid - 1
+        }else {
+            low = mid + 1
+        }
+    }
+    return ans
+};
