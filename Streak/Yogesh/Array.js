@@ -236,3 +236,16 @@ var union = function() {
 // Maintain a count & maxCount while iterating a loop 
 
 
+// #12 Find the number that appears once, and other numbers twice
+// Brute | TC O() | SC O()
+// Optimal | TC O() | SC O()
+
+
+// #13 Longest subarray with given sum K(positives)
+// Brute | TC O() | SC O()
+// Optimal | TC O() | SC O()
+
+
+// #14 	Longest subarray with sum K (Positives + Negatives)
+// Brute | TC O() | SC O()
+// Optimal | TC O() | SC O()
