@@ -270,3 +270,52 @@ var shipWithinDays = function(weights, days) {
     }
     return ans
 };
+
+// #7  Kth Missing Positive Number - leetcode 1539
+var findKthPositive = function(arr, k) {
+    let low = 0
+    let high = arr.length - 1
+    while(low <= high) {
+        let mid = Math.floor((low+high)/2)
+        let missing = Math.floor(arr[mid] - (mid+1))
+        if (missing < k) low = mid + 1
+        else high = mid - 1
+    }
+    return low + k // high + 1 + k
+};
+
+// #8 Aggressive cows
+class Solution {
+    // Function to solve the problem.
+    isCowsPLacementPossible = function(stalls,cowsDistane,cows) {
+        let isPossible = true
+        let cowCnt = cows - 1
+        let previousCowCoardinate = stalls[0]
+        for(let i = 1;i< stalls?.length;i++) {
+            if(cowCnt && (stalls[i] - previousCowCoardinate >= cowsDistane)) {
+                cowCnt--
+                previousCowCoardinate = stalls[i]
+            }
+        }
+        if (cowCnt > 0) return false
+        return isPossible
+    }
+    aggressiveCows(stalls, k) {
+        stalls.sort((a,b) => a - b)
+        let n = stalls?.length - 1
+        let low = 1
+        let high = stalls[n]
+        let ans = 0
+        while(low <= high) {
+            let mid = Math.floor((low+high)/2)
+            if(this.isCowsPLacementPossible(stalls,mid,k)) {
+                ans = mid
+                low = mid + 1
+            }else {
+                high = mid - 1
+            }
+        }
+        return ans
+    }
+}
+// #9 
