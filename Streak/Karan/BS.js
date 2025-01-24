@@ -318,4 +318,85 @@ class Solution {
         return ans
     }
 }
-// #9 
+// #9 Allocate Minimum Pages
+class Solution {
+    // Function to find minimum number of pages.
+    findLowAndSum = function(arr) {
+        let data = {max : arr[0], sum : arr[0]}
+        for(let i = 1;i < arr.length; i++) {
+            data.max = Math.max(data.max, arr[i])
+            data.sum += arr[i]
+        }
+        return data
+    }
+    findNoOfStudents = function(arr,pages) {
+        let std = 1
+        let sumOfPages = 0
+        for(let i = 0; i< arr.length; i++) {
+            if(sumOfPages + arr[i] <= pages) {
+                sumOfPages += arr[i]
+            }else {
+                std++
+                sumOfPages = arr[i]
+            }
+        }
+        return std
+    }
+    findPages(arr, k) {
+        if(k > arr.length) return -1
+        let data = this.findLowAndSum(arr)
+        let low = data.max
+        let high = data.sum
+        let pages = data.sum
+        while(low <= high) {
+            let mid = Math.floor((low+high)/2) // pages
+            let std = this.findNoOfStudents(arr,mid)
+            if(std <= k) {
+                pages = mid
+                high = mid - 1
+            }else {
+                low = mid + 1
+            }
+        }
+        return pages
+        // your code here
+    }
+}// # 10 & #11 Split Array Largest Sum - 410
+
+var findLowAndSum = function(arr) {
+    let data = {max : arr[0], sum : arr[0]}
+    for(let i = 1;i < arr.length; i++) {
+        data.max = Math.max(data.max, arr[i])
+        data.sum += arr[i]
+    }
+    return data
+}
+var findNoOfPossibleArr = function(arr,maxAllocation) {
+let k = 1
+let sum = 0
+for(let i = 0; i < arr.length; i++) {
+    if(sum + arr[i] <= maxAllocation) {
+        sum += arr[i]
+    }else {
+        k++
+        sum = arr[i]
+    }
+}
+return k
+}
+var splitArray = function(nums, k) {
+if(k > nums.length) return -1
+let data = findLowAndSum(nums)
+let low = data.max
+let high = data.sum
+let ans = high
+while(low <= high) {
+    let mid = Math.floor((low+high)/2)
+    let noOfPossibleArr = findNoOfPossibleArr(nums,mid)
+    if(noOfPossibleArr <= k) {
+        ans = mid
+        high = mid - 1
+    }else low = mid + 1
+}
+return ans
+};
