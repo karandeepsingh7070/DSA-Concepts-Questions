@@ -96,3 +96,63 @@ var longestCommonPrefix = function(strs) {
     }
     return res
 };
+
+// #5 Isomorphic Strings - leetcode 205
+var isIsomorphic = function(s, t) {
+    if(s.length != t.length) return false
+    let isoPhormicMapST = new Map();
+    let isoPhormicMapTS = new Map();
+    for(let i = 0 ; i< s.length; i++) {
+            let chS = isoPhormicMapST.get(s[i])
+            let chT = isoPhormicMapTS.get(t[i])
+            if(chS && chS != t[i]) return false
+            if(chT && chT != s[i]) return false
+
+        isoPhormicMapST.set(s[i],t[i])
+        isoPhormicMapTS.set(t[i],s[i])
+    }
+    return true
+};
+
+// OPTIMAL
+var isIsomorphic = function(s, t) {
+    if(s.length!==t.length){
+        return false
+    }
+
+    for(let i=0;i<s.length;i++){
+        if(s.indexOf(s[i])!==t.indexOf(t[i])){
+            //indexOf gives first occourance
+            return false
+        }
+
+    }
+    return true
+};
+
+// #6 Rotate strings - leetcode 796
+var rotateString = function(s, goal) {
+    if(s.length != goal.length) return false
+    let mpStr = s + s
+    if(mpStr.includes(goal)) return true
+    return false
+};
+
+// #7 Valid Anagram - leetcode 242
+var isAnagram = function(s, t) {
+    if(s.length != t.length) return false
+    let sMap = {}
+    for(let i = 0; i< s.length;i++) {
+        sMap[s[i]] = sMap[s[i]] + 1 || 1
+    }
+     for(let i = 0; i< t.length;i++) {
+        if(!sMap[t[i]]) return false
+        if(sMap[t[i]] == 1) {
+            delete(sMap[t[i]])
+        }else {
+        sMap[t[i]] = sMap[t[i]] - 1
+        }
+    }
+    return Object.keys(sMap).length ? false : true
+
+};
