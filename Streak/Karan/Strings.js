@@ -56,3 +56,43 @@ var reverseWords = function(s) {
     }
     return ans.substr(1)
 };
+
+// #3 Largest Odd Number in String - leetcode 1903
+var largestOddNumber = function(num) {
+    let oddNum = num
+    for(let i = num.length - 1;i >=0; i--) {
+        let oncePlace = parseInt(num[i],10)
+        if(oncePlace % 2 !=0) return oddNum
+        oddNum = oddNum.substring(0,i)
+    }
+    return ""
+};
+
+// #4 
+// BRUTE
+
+var longestCommonPrefix = function(strs) {
+    let res = ""
+    for(let i = 0; i < strs[0].length; i++) {
+        for(const str of strs) {
+            if(str.length == i || str[i] !== strs[0][i]) return res
+        }
+        res += strs[0][i]
+    }
+    return res
+};
+
+// OPTIMAL
+var longestCommonPrefix = function(strs) {
+    if(!strs.length) return ""
+    strs.sort()
+    let first = strs[0]
+    let last = strs[strs.length - 1]
+    let res = ""
+    for(let i = 0; i < strs[0].length;i++) {
+        if(first[i] == last[i]) {
+            res += first[i]
+        }else break
+    }
+    return res
+};
