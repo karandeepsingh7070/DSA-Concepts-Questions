@@ -156,3 +156,52 @@ var isAnagram = function(s, t) {
     return Object.keys(sMap).length ? false : true
 
 };
+
+// #8 Sort Characters By Frequency - leetcode 451
+
+var frequencySort = function(s) {
+    let chMap = {};
+    let ans = ""
+    for(let i = 0; i< s.length; i++) {
+        chMap[s[i]] = chMap[s[i]] + 1 || 1
+    }
+    let priorityQueue = Object.entries(chMap)
+    priorityQueue.sort((a,b) => b[1] - a[1])
+
+    for(const [key,val] of priorityQueue) {
+        let freq = val
+        while(freq) {
+            ans += key
+            freq--
+        }
+    }
+    return ans
+};
+
+// #9 Maximum Nesting Depth of the Parentheses - leetcode 1614
+var maxDepth = function(s) {
+    let paraCnt = 0
+    let ans = 0
+    for(let i = 0; i < s.length; i++) {
+        if(s[i] == "(") paraCnt++
+        if(s[i] == ")") paraCnt--
+        ans = Math.max(ans,paraCnt)
+    }
+    return ans
+};
+
+// #10 String to Integer (atoi) - leetcode 8
+var myAtoi = function(s) {
+    let ans = 0
+    sT = s.trim()
+    for(let i = 0; i < sT.length;i++) {
+        if((sT[i] == "-" || sT[i] == "+")  && i == 0) continue
+        if(sT[i] >= "0" && sT[i] <= "9") {
+            ans = (ans*10) + parseInt(sT[i])
+        }else break
+    }
+    if(sT.charAt(0) == "-") ans *= -1
+    if (ans > 2147483647) return 2147483647; //equivalent of 32bit signed integer
+    if (ans < -2147483648) return -2147483648;
+    return parseInt(ans) 
+};
