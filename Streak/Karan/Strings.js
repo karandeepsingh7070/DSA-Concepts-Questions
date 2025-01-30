@@ -225,3 +225,91 @@ class Solution {
         return len
     }
 } 
+
+// #12 Longest Palindromic Substring - leetcode 5
+// BRUTE
+var isPalindrome = (str) => {
+    let i = 0
+    let j = str.length - 1
+    while(i<=j) {
+        if(str[i] !== str[j]) return false
+        i++
+        j--
+    }
+    return true
+}
+var longestPalindrome = function(s) {
+    let max = 0
+    let longestStr = ""
+    for(let i = 0; i< s.length;i++) {
+        for(let j = i; j< s.length;j++) {
+            let substr = s.substring(i, j + 1);
+            if(isPalindrome(substr) && max < substr.length) {
+                max = substr.length
+                longestStr = substr
+            }
+        }
+    }
+    return longestStr
+};
+
+// #13 Sum of Beauty of All Substrings - leetcode 1781
+// BRUTE
+var findBeauty = (s) => {
+    let freqMap = {}
+    let max = -1
+    let min = s.length
+    for(let k = 0; k< s.length; k++) {
+        freqMap[s[k]] = freqMap[s[k]] + 1 || 1
+    }
+    for(const key in freqMap) {
+        max = Math.max(freqMap[key],max)
+        min = Math.min(freqMap[key],min)
+    }
+    return max - min
+}
+var beautySum = function(s) {
+    if(s.length == 1) return 1
+    let sum = 0
+    for(let i = 0; i < s.length; i++) {
+        for(let j = i; j < s.length; j++) {
+            let beauty = findBeauty(s.substring(i,j + 1))
+            sum += beauty
+        }
+    }
+    return sum
+};
+
+//OPTIMIZED
+
+var findMaxAndMin = function(arr) {
+    let minMax = { max: -Infinity, min: Infinity };
+    
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] > 0) { // Ignore zero frequencies
+            minMax.max = Math.max(minMax.max, arr[i]);
+            minMax.min = Math.min(minMax.min, arr[i]);
+        }
+    }
+    if (minMax.min === Infinity) minMax.min = 0; // Handle case when all frequencies are zero
+    
+    return minMax;
+};
+var beautySum = function(s) {
+    if(s.length == 1) return 0
+    let sum = 0
+    let arr = new Array(26).fill(0)
+    for(let i = 0; i < s.length; i++) {
+        arr = new Array(26).fill(0)
+        for(let j = i; j < s.length; j++) {
+            arr[s.charCodeAt(j) - 'a'.charCodeAt(0)] = arr[s.charCodeAt(j) - 'a'.charCodeAt(0)] + 1 // 'a'
+            // arr[s.charCodeAt(j) - 97]++;
+            let beauty = findMaxAndMin(arr).max - findMaxAndMin(arr).min
+            sum += beauty
+        }
+    }
+    return sum
+};
+
+
+
