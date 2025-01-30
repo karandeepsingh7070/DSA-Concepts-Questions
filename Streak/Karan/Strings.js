@@ -205,3 +205,23 @@ var myAtoi = function(s) {
     if (ans < -2147483648) return -2147483648;
     return parseInt(ans) 
 };
+
+// #11 Substrings with K Distinct
+
+//BRUTE
+class Solution {
+    countSubstr(s, k) {
+        let subStrMap = new Map();
+        let len = 0
+        for(let i = 0; i< s.length; i++) {
+            subStrMap.clear()
+            for(let j = i; j < s.length; j++) {
+                subStrMap.set(s[j],subStrMap.get(s[j]) + 1 || 1)
+                if(subStrMap.size == k) {
+                    len++;
+                }
+            }
+        }
+        return len
+    }
+} 
