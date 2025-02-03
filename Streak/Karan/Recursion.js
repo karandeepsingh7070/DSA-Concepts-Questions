@@ -1,23 +1,23 @@
 // #1 Count Good Numbers - leetcode 1922
 // BRUTE
-class Solution {
-    public int countGoodNumbers(long n) {
-    long even = 5;
-    long prime = 4;
-     long tEven = 1;
-     long tOdd=1;
-    for(int i = 0; i < n; i++) {
+// class Solution {
+//     public int countGoodNumbers(long n) {
+//     long even = 5;
+//     long prime = 4;
+//      long tEven = 1;
+//      long tOdd=1;
+//     for(int i = 0; i < n; i++) {
        
-        if(i % 2 == 0) {
-          tEven= (tEven*even)% 1000000007;
-        }
-        else{
-           tOdd= (tOdd*prime)% 1000000007;
-        }
-    }
-       return (int) ((tEven * tOdd) % 1000000007);
-    }
-}
+//         if(i % 2 == 0) {
+//           tEven= (tEven*even)% 1000000007;
+//         }
+//         else{
+//            tOdd= (tOdd*prime)% 1000000007;
+//         }
+//     }
+//        return (int) ((tEven * tOdd) % 1000000007);
+//     }
+// }
 
 // #2
 
@@ -99,25 +99,50 @@ var myAtoi = function(s) {
 
 // #7 sort a stack
 
-class GfG {
+// class GfG {
     
-    public static void sortStack(Stack<Integer> s) {
-        if (s.isEmpty()) return;
-        int top = s.pop();
-        sortStack(s);
-        insertSortedElm(s,top);
-    }
-    public static void insertSortedElm(Stack<Integer> stack, int value) {
-        if(stack.isEmpty() ||  stack.peek() <= value) {
-            stack.push(value);
-            return;
+//     public static void sortStack(Stack<Integer> s) {
+//         if (s.isEmpty()) return;
+//         int top = s.pop();
+//         sortStack(s);
+//         insertSortedElm(s,top);
+//     }
+//     public static void insertSortedElm(Stack<Integer> stack, int value) {
+//         if(stack.isEmpty() ||  stack.peek() <= value) {
+//             stack.push(value);
+//             return;
+//         }
+//         int top = stack.pop();
+//         insertSortedElm(stack,value);
+//         stack.push(top);
+//     }
+//     public Stack<Integer> sort(Stack<Integer> s) { //main
+//         sortStack(s);
+//         return s;
+//     }
+// }
+
+// #8 reverse a stack 
+
+class Solution {
+    //Function to reverse a string.
+    insertAtBottom(stack,value) {
+        if(stack.length === 0) {
+            stack.push(value)
+            return
         }
-        int top = stack.pop();
-        insertSortedElm(stack,value);
-        stack.push(top);
+        let top = stack.pop()
+        this.insertAtBottom(stack,value)
+        stack.push(top)
     }
-    public Stack<Integer> sort(Stack<Integer> s) { //main
-        sortStack(s);
-        return s;
+    reverseStack(s) {
+        if(s.length === 0) return
+        let top = s.pop();
+        this.reverseStack(s)
+        this.insertAtBottom(s,top)
+    }
+    reverse(St) {
+        this.reverseStack(St)
+        return St
     }
 }
