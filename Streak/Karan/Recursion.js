@@ -146,3 +146,106 @@ class Solution {
         return St
     }
 }
+
+// Practice Ques - 
+var printTargetSeq = function(ind,ds,arr,s,target,ansList) {
+    if(ind >= arr.length) { // base case
+        if(s <= target) {
+            ansList.push(s)
+        }
+        return
+    }
+    // Pick
+    s += arr[ind]
+    ds.push(arr[ind])
+    printTargetSeq(ind + 1,ds,arr,s,target,ansList)
+    // Not Pick
+    s -= arr[ind]
+    ds.pop()
+    printTargetSeq(ind + 1,ds,arr,s,target,ansList)
+}
+var numSubseq = function(nums, target) {
+    if(!nums.length) return nums
+    let ansList = [] // to return the ans
+    printTargetSeq(0,[],nums,0,target,ansList)
+    return ansList
+};
+
+//#9 Generate all Binary except consecutive 1's
+
+// "" 
+// ├── "0"
+// │   ├── "00"
+// │   │   ├── "000"
+// │   │   ├── "001"
+// │   ├── "01"
+// │       ├── "010"
+// │       ├── "011" ❌ (Not allowed)
+// ├── "1"
+//     ├── "10"
+//         ├── "100"
+//         ├── "101"
+//     ├── "11" ❌ (Not allowed)
+
+class Solution {
+    //Function to generate all binary strings of n bits.
+ printBinary(i, n, ds, ans) {
+        if (i === n) {
+            ans.push(ds);
+            return;
+        }
+
+        // Always add "0"
+        this.printBinary(i + 1, n, ds + "0", ans);
+
+        // Add "1" only if the previous character is not "1"
+        if (ds.length === 0 || ds.charAt(ds.length - 1) !== "1") {
+            this.printBinary(i + 1, n, ds + "1", ans);
+        }
+    }
+    generateBinaryStrings(n)
+    {
+        let ans = [];
+        this.printBinary(0, n, "", ans); // Start with an empty string
+        return ans;
+    }
+}
+
+// #10 print all valid paranthese
+
+var printValidParantheses = function(open,close,n,ds,ans) {
+    if(open == n && close == n) {
+        ans.push(ds)
+        return
+    }
+    if(open < n) {
+    printValidParantheses(open+1,close,n,ds + "(",ans)
+    }
+    if(close < open){
+    printValidParantheses(open,close + 1,n,ds + ")",ans)
+    }
+
+}
+var generateParenthesis = function(n) {
+    let ans = []
+    printValidParantheses(0,0,n,"",ans)
+    return ans
+};
+
+// #11 Generate all sequences
+
+var printS = function(i,ds,ans,nums){
+    if(i == nums.length) {
+        ans.push([...ds])
+        return
+    }
+    ds.push(nums[i])
+    printS(i + 1,ds,ans,nums)
+    ds.pop()
+    printS(i + 1,ds,ans,nums)
+}
+var subsets = function(nums) {
+    let ans = []
+    printS(0,[],ans,nums)
+    return ans
+};
