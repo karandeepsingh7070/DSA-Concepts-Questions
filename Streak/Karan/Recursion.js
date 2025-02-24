@@ -249,3 +249,41 @@ var subsets = function(nums) {
     printS(0,[],ans,nums)
     return ans
 };
+
+// #12 Perfect Sum Problem
+class Solution {
+    calculateTarget(i,arr,target,sum) {
+        if(i === arr.length) {
+            return sum == target ? 1 : 0
+        }
+        sum += arr[i]
+        let l = this.calculateTarget(i+1,arr,target,sum)
+        sum -= arr[i]
+        let r = this.calculateTarget(i+1,arr,target,sum)
+        return l + r
+    }
+    perfectSum(arr, target) {
+        return this.calculateTarget(0,arr,target,0)
+    }
+}
+
+// #13 combination sum 1
+var findTarget = function(arr,i,target,ds,ans) {
+    if(i == arr.length) {
+        if(target == 0) {
+            ans.push([...ds])
+        }
+        return
+    }
+    if(arr[i] <= target) {
+    ds.push(arr[i])
+    findTarget(arr,i,target - arr[i],ds,ans)
+    ds.pop()
+    }
+    findTarget(arr,i + 1,target,ds,ans)
+}
+var combinationSum = function(candidates, target) {
+    let ans = []
+    findTarget(candidates,0,target,[],ans)
+    return ans
+};
