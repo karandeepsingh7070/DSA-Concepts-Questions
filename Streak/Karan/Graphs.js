@@ -213,3 +213,188 @@ var floodFill = function(image, sr, sc, color) {
           return false
       }
   }
+
+  // using DFS
+
+  class Solution {
+    // Function to detect cycle in an undirected graph.
+    detectCycle(node,parentNode,isVisited,adj) {
+        isVisited[node] = true
+        for(const nbr of adj[node]) {
+            if(!isVisited[nbr]) {
+               if (this.detectCycle(nbr, node, isVisited, adj)) {
+                    return true;
+                }
+            }else {
+                if(nbr != parentNode) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    isCycle(adj) {
+        let isVisited = new Array(adj.length).fill(false)
+        let parentNode = -1
+        for(let i = 0; i< isVisited.length; i++) {
+            if(!isVisited[i]) {
+                if (this.detectCycle(i,parentNode,isVisited,adj)) return true
+            }
+        }
+        
+        return false
+    }
+}
+
+//  01 Matrix leetcode - 542
+
+class Pair {
+    constructor(row,col,steps) {
+        this.row = row
+        this.col = col
+        this.steps = steps
+    }
+}
+var updateMatrix = function(mat) {
+    let n = mat.length
+    let m = mat[0].length
+    let visited = new Array(n).fill(0).map(() => new Array(m).fill(0))
+    let dis = new Array(n).fill(0).map(() => new Array(m).fill(0))
+
+    let q = new CustomQueue()
+    //adding all that are 0's same as adding all the rotton oranges
+    for(let i = 0; i < n; i++) {
+        for(let j = 0;j < m; j++) {
+            if(mat[i][j] == 0) {
+            q.enqueue(new Pair(i,j,0))
+            visited[i][j] = 1
+            }
+        }
+    }
+
+    let dRow = [-1,0,1,0]
+    let dCol = [0,1,0,-1]
+
+    while(!q.isEmpty()) {
+        let fronElm = q.front()
+        let fRow = fronElm.row
+        let fCol = fronElm.col
+        let steps = fronElm.steps
+        dis[fRow][fCol] = steps
+        q.dequeue()
+    for(let i = 0; i < 4; i++) {
+        let nRow = fRow + dRow[i]
+        let nCol = fCol + dCol[i]
+        if(nRow >= 0 && nCol >=0 && nRow < n && nCol < m && !visited[nRow][nCol]) {
+            visited[nRow][nCol] = 1
+            q.enqueue(new Pair(nRow,nCol,steps + 1))
+        }
+    }
+    }
+    return dis
+};
+
+// surrounded Regions 
+
+var dfs = function(row,col,visited, board) {
+    let n = board.length
+    let m = board[0].length
+    visited[row][col] = 1
+
+    let dRow = [-1,0,1,0]
+    let dCol = [0,1,0,-1]
+    
+    for(let k = 0; k < 4; k++) {
+        let nRow = row + dRow[k]
+        let nCol = col + dCol[k]
+        if(nRow >= 0 && nCol >= 0 && nRow < n && nCol < m && !visited[nRow][nCol] && board[nRow][nCol] == "O") {
+            dfs(nRow,nCol,visited, board)
+        }
+    }
+}
+var solve = function(board) {
+    let n = board.length
+    let m = board[0].length
+    let visited = new Array(n).fill(0).map(() => new Array(m).fill(0))
+    // let mat = board.map(row => [...row])
+    // traversing Top Row & Bottom Row
+    for(let j = 0; j < m; j++) {
+        // Top Row
+        if(!visited[0][j] && board[0][j] == "O") {
+            dfs(0,j,visited, board)
+        }
+        // Bottom Row
+        if(!visited[n-1][j] && board[n-1][j] == "O") {
+            dfs(n-1,j,visited, board)
+        }
+    }
+
+    // traversing Left Col & Right Col
+    for(let i = 0; i < n; i++) {
+        if(!visited[i][0] && board[i][0] == "O") {
+            dfs(i,0,visited, board)
+        }
+        if(!visited[i][m-1] && board[i][m-1] == "O") {
+            dfs(i,m-1,visited, board)
+        }
+    }
+
+    // to formulate the answer
+    for(let i = 0; i < n; i++) {
+        for(let j = 0;j < m; j++) {
+            if(!visited[i][j] && board[i][j] == "O") {
+                board[i][j] = "X"
+            }
+        }
+    }
+    return board
+};
+
+// Number of Enclaves leetcode - 1020
+
+var numEnclaves = function(grid) {
+    let n = grid.length
+    let m = grid[0].length
+    let visited = new Array(n).fill(0).map(() => new Array(m).fill(0))
+    let q = new CustomQueue()
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+            if (i == 0 || j == 0 || i == n - 1 || j == m - 1) {
+                if (!visited[i][j] && grid[i][j] == 1) {
+                    q.enqueue(new Pair(i, j));
+                    visited[i][j] = 1;
+                }
+            }
+        }
+    }
+
+    let dRow = [-1, 0, 1, 0];
+    let dCol = [0, 1, 0, -1];
+
+    while(!q.isEmpty()) {
+        let frontElm = q.front()
+        let row = frontElm.row
+        let col = frontElm.col
+        q.dequeue()
+        for(let k = 0; k < 4; k++) {
+            let nRow = row + dRow[k];
+            let nCol = col + dCol[k];
+            if(nRow >= 0 && nCol >= 0 && nRow < n && nCol < m && !visited[nRow][nCol] && grid[nRow][nCol] == 1) {
+                q.enqueue(new Pair(nRow,nCol))
+                visited[nRow][nCol] = 1
+            }
+        }
+    }
+
+    // to return ans
+    let cnt = 0;
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+            if (!visited[i][j] && grid[i][j] == 1) {
+                cnt++;
+            }
+        }
+    }
+    return cnt;
+};
