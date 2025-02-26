@@ -69,3 +69,80 @@ var findCircleNum = function(isConnected) {
     }
     return noOfProvinces
 };
+
+// Rotton Oranges 
+class Pair {
+    constructor(row, col, tm) {
+        this.row = row;
+        this.col = col;
+        this.tm = tm;
+    }
+}
+
+class CustomQueue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(element) {
+    this.items.push(element); // Adds element at the end
+  }
+
+  dequeue() {
+    return this.items.shift(); // Removes element from the front
+  }
+
+  front() {
+    return this.items.length > 0 ? this.items[0] : null;
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+var orangesRotting = function(grid) {
+    let n = grid.length
+    let m = grid[0].length
+    let visited = new Array(n).fill(0).map(() => new Array(m).fill(0));
+    
+    let queue = new CustomQueue();
+    let tFresh = 0
+    let rT = 0
+    for(let i = 0; i< n; i++) {
+        for(let j = 0; j < m;j++) {
+            if(grid[i][j] == 2) {
+                let rottonPair = new Pair(i,j,0)
+                queue.enqueue(rottonPair)
+                visited[i][j] = 2
+            }
+            if(grid[i][j] == 1) {
+                tFresh++
+            }
+        }
+    }
+
+    let dRow = [-1,0,1,0]
+    let dCol = [0,1,0,-1]
+
+    let tMax = 0
+    while(!queue.isEmpty()) {
+        let frontElm = queue.front()
+        let row = frontElm.row
+        let col = frontElm.col
+        let tm = frontElm.tm
+        tMax = Math.max(tMax,tm)
+        queue.dequeue()
+        for(let k = 0; k < 4; k++) { // check for nbrs
+            let nRow = row - dRow[k]
+            let nCol = col - dCol[k]
+            if(nRow >= 0 && nRow < n && nCol >= 0 && nCol < m && visited[nRow][nCol] != 2 && grid[nRow][nCol] == 1) {
+                visited[nRow][nCol] = 2
+                queue.enqueue(new Pair(nRow, nCol, tm + 1))
+                rT++
+            }
+        }
+    }
+
+    if(rT != tFresh) return -1
+    return tMax
+};
