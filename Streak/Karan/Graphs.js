@@ -398,3 +398,76 @@ var numEnclaves = function(grid) {
     }
     return cnt;
 };
+
+// Word Length - // Brute Force
+
+var ladderLength = function(beginWord, endWord, wordList) {
+    let seqList = new Set(wordList)
+    let q = new CustomQueue()
+    q.enqueue({word : beginWord, seq : 1})
+    seqList.delete(beginWord)
+
+    while(!q.isEmpty()) {
+        let frontElm = q.front()
+        let word = frontElm.word
+        let seq = frontElm.seq
+        q.dequeue()
+        if(word == endWord) return seq
+        for(let j = 0; j < word.length; j++) {
+            let originalCh = word[j]
+            let wordArray = word.split("");
+            for(let ch = "a".charCodeAt(0); ch <= "z".charCodeAt(0); ch++) {
+                wordArray[j] = String.fromCharCode(ch); // Modify the letter
+                let newWord = wordArray.join("");
+                if(seqList.has(newWord)) {
+                    seqList.delete(newWord)
+                    q.enqueue({word : newWord, seq : seq + 1})
+                }
+            }
+        }
+    }
+    return 0
+
+};
+
+
+// Number of Distinct Islands
+
+class Solution {
+    dfs(row,col,baseRow,baseCol,visited,grid,shape) {
+        let n = grid.length
+        let m = grid[0].length
+        visited[row][col] = 1
+        shape.push(`${row - baseRow},${col - baseCol}`);
+        
+        let dRow = [-1,0,1,0]
+        let dCol = [0,1,0,-1]
+        
+        for(let i = 0; i < 4; i++) {
+            let nRow = row + dRow[i]
+            let nCol = col + dCol[i]
+            if(nRow >= 0 && nCol >= 0 && nRow < n && nCol < m && !visited[nRow][nCol] && grid[nRow][nCol]) {
+                this.dfs(nRow,nCol,baseRow,baseCol,visited,grid,shape)
+            }
+        }
+    }
+    countDistinctIslands(grid)
+    {
+        let n = grid.length
+        let m = grid[0].length
+        let visited = new Array(n).fill(0).map(() => new Array(m).fill(0))
+        // let noOfIslands = 0
+        let uniqueIslands = new Set();
+        for(let i = 0; i < n; i++) {
+            for(let j = 0; j < m; j++) {
+                if(!visited[i][j] && grid[i][j] == 1) {
+                    let shape = [];
+                    this.dfs(i,j,i,j,visited,grid,shape)
+                    uniqueIslands.add(shape.join("|"));
+                }
+            }
+        }
+        return uniqueIslands.size
+    }
+}
+
