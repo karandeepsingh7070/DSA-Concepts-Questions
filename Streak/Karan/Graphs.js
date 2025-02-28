@@ -471,3 +471,66 @@ class Solution {
     }
 }
 
+// is Graph Barpatite
+
+var dfs = function(node,graph,colorList,color) {
+    colorList[node] = color
+    for(const nbreNode of graph[node]) {
+        if(colorList[nbreNode] == -1) {
+           if(!dfs(nbreNode,graph, colorList, 1 - color)) {
+            return false
+           }
+        }else {
+            if(colorList[nbreNode] == colorList[node]) {
+                return false
+            }
+        }
+    }
+    return true
+}
+var isBipartite = function(graph) {
+    let n = graph.length
+    let colorList = new Array(n).fill(-1)
+    // colors can be 0|1
+   for (let i = 0; i < n; i++) { // Ensure all nodes are visited
+        if (colorList[i] == -1) {
+            if (!dfs(i, graph, colorList, 0)) {
+                return false;
+            }
+        }
+    }
+    return true
+};
+
+// Cycle in a Directed Graph
+class Solution {
+    dfs(node,visited,pathVis,adj) {
+        visited[node] = true
+        pathVis[node] = 1
+        
+        for(const nbr of adj[node]) {
+            if(!visited[nbr]) {
+                if(this.dfs(nbr,visited,pathVis,adj)) {
+                    return true
+                }
+            }else if(pathVis[nbr]) {
+                return true
+            }
+        }
+        pathVis[node] = 0
+        return false
+    }
+    isCyclic(adj) {
+        let visited = new Array(adj.length).fill(0)
+        let pathVis = new Array(adj.length).fill(0)
+        
+        for(let i = 0; i< adj.length; i++) {
+            if(!visited[i]) {
+                if(this.dfs(i,visited,pathVis,adj)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+}
