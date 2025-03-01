@@ -287,3 +287,86 @@ var combinationSum = function(candidates, target) {
     findTarget(candidates,0,target,[],ans)
     return ans
 };
+
+// combination sum 2 leetcode - 40
+
+var findTarget = function(arr,ind,target,ds,ans) {
+    if(target == 0) {
+        ans.push([...ds])
+        return
+    }
+
+    for(let i = ind; i < arr.length; i++) {
+        if(i > ind && arr[i] == arr[i-1]) continue
+
+        if(arr[i] > target) break;
+
+        ds.push(arr[i])
+        findTarget(arr,i + 1,target - arr[i],ds,ans)
+        ds.pop()
+    }
+    
+}
+var combinationSum2 = function(candidates, target) {
+    candidates.sort((a,b) => a - b)
+    let ans = []
+    findTarget(candidates,0,target,[],ans)
+    return ans
+};
+
+// subset 1 
+class Solution {
+    findSebSets(ind,sum,arr,ans) {
+        if(ind == arr.length) {
+            ans.push(sum)
+            return
+        }
+        this.findSebSets(ind + 1,sum + arr[ind],arr,ans)
+        this.findSebSets(ind + 1,sum,arr,ans)
+    }
+    subsetSums(arr) {
+        let ans = []
+        this.findSebSets(0,0,arr,ans)
+        return ans
+    }
+}
+
+// find all unique subsets Subsets II - leetcode 90
+
+var findUniqueSubsets = function(nums,ind,list,ans) {
+    ans.push([...list])
+    for(let i = ind; i < nums.length; i++) {
+        if(i > ind && nums[i] == nums[i - 1]) continue
+        list.push(nums[i])
+        findUniqueSubsets(nums,i + 1,list,ans)
+        list.pop()
+    }
+}
+var subsetsWithDup = function(nums) {
+    nums.sort((a,b) => a-b)
+    let ans = []
+    findUniqueSubsets(nums,0,[],ans)
+    return ans
+};
+
+// Combination 3 leetcode 216
+var findCombination = function(ind,target,ds,ans,k) {
+    if(ds.length == k) {
+        if(target == 0) {
+            ans.push([...ds])
+        }
+        return
+    }
+
+    for(let i = ind; i <=9; i++) {
+        ds.push(i)
+        findCombination(i + 1,target - i,ds,ans,k)
+        ds.pop()
+    }
+
+}
+var combinationSum3 = function(k, n) {
+    let ans = []
+    findCombination(1,n,[],ans,k)
+    return ans
+};
