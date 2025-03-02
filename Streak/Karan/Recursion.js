@@ -370,3 +370,66 @@ var combinationSum3 = function(k, n) {
     findCombination(1,n,[],ans,k)
     return ans
 };
+
+// Letter Combinations of a Phone Number - leetcode 17
+
+var findCombination = function(ind,digits,str,ans,digMap) {
+    if(ind >= digits.length) {
+        ans.push(str)
+        return
+    }
+    let chs = digMap[digits[ind]]
+
+    for(let i = 0; i < chs.length; i++) {
+        let ch = chs[i]
+        findCombination(ind + 1,digits,str + ch,ans,digMap)
+    }
+
+}
+var letterCombinations = function(digits) {
+    if(!digits.length) return []
+    let digMap = {
+        2 : ['a','b','c'],
+        3 : ['d','e','f'],
+        4 : ['g','h','i'],
+        5 : ['j','k','l'],
+        6 : ['m','n','o'],
+        7 : ['p','q','r','s'],
+        8 : ['t','u','v'],
+        9 : ['w','x','y','z'],
+    }
+    let ans = []
+    findCombination(0,digits,"",ans,digMap)
+    return ans
+};
+
+// Palindrome Partitioning leetcode - 131
+
+var isPalindrome = function(str) {
+    let i = 0
+    let j = str.length - 1
+    while(j > i) {
+        if(str[i] != str[j]) return false
+        i++
+        j--
+    }
+    return true
+}
+var findPalindromes = function(ind,s,list,ans) {
+    if(ind == s.length) {
+        ans.push([...list])
+        return
+    }
+    for(let i = ind; i < s.length; i++){
+        if(isPalindrome(s.substring(ind,i + 1))) {
+            list.push(s.substring(ind,i + 1))
+            findPalindromes(i + 1,s,list,ans)
+            list.pop()
+        }
+    }
+}
+var partition = function(s) {
+    let ans = []
+    findPalindromes(0,s,[],ans)
+    return ans
+};
