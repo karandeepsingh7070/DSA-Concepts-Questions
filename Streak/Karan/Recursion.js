@@ -433,3 +433,82 @@ var partition = function(s) {
     findPalindromes(0,s,[],ans)
     return ans
 };
+
+// N Queens leetcode - 51
+var isSafe = function(row,col,list,n) {
+    // Brute
+    let dupRow = row
+    let dupCol = col
+
+    while(row >= 0 && col >= 0) {
+        if(list[row][col] == "Q") return false
+        row--
+        col--
+    }
+    row = dupRow
+    col = dupCol
+    while(col >= 0) {
+        if(list[row][col] == "Q") return false
+        col--
+    }
+    row = dupRow
+    col = dupCol
+    while(col>=0 && row < n) {
+        if(list[row][col] == "Q") return false
+        row++
+        col--
+    }
+    return true
+}
+var findQueenPlacements = function(col,list,ans,n) {
+    if(col == n) {
+        ans.push(list.map(row => row.join("")));
+        return
+    }
+
+    for(let row = 0; row < n; row++) {
+        if(isSafe(row,col,list,n)) {
+        list[row][col] = "Q"
+        findQueenPlacements(col + 1,list,ans,n)
+        list[row][col] = "."
+        }
+    }
+}
+var solveNQueens = function(n) {
+    let ans = []
+    let list = new Array(n).fill(0).map(() => new Array(n).fill("."))
+    findQueenPlacements(0,list,ans,n)
+    return ans
+};
+
+// Optimised
+var findQueenPlacements = function(col,list,ans,n,leftRow,upperDiag,lowerDiag) {
+    if(col == n) {
+        ans.push(list.map(row => row.join("")));
+        return
+    }
+
+    for(let row = 0; row < n; row++) {
+        // if(isSafe(row,col,list,n)) {
+        if(!leftRow[row] && !upperDiag[row + col] && !lowerDiag[(n - 1) + (col - row)]) {
+        leftRow[row] = 1
+        upperDiag[row + col] = 1
+        lowerDiag[(n - 1) + (col - row)] = 1
+        list[row][col] = "Q"
+        findQueenPlacements(col + 1,list,ans,n,leftRow,upperDiag,lowerDiag)
+        list[row][col] = "."
+        leftRow[row] = 0
+        upperDiag[row + col] = 0
+        lowerDiag[(n - 1) + (col - row)] = 0
+        }
+    }
+}
+var solveNQueens = function(n) {
+    let ans = []
+    let list = new Array(n).fill(0).map(() => new Array(n).fill("."))
+    let leftRow = new Array(n).fill(0)
+    let upperDiag = new Array(2*n - 1).fill(0)
+    let lowerDiag = new Array(2*n - 1).fill(0)
+    findQueenPlacements(0,list,ans,n,leftRow,upperDiag,lowerDiag)
+    return ans
+};
