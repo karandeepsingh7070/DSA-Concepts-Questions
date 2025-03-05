@@ -512,3 +512,41 @@ var solveNQueens = function(n) {
     findQueenPlacements(0,list,ans,n,leftRow,upperDiag,lowerDiag)
     return ans
 };
+
+// rat maze 
+
+class Solution {
+    // Function to find all possible paths
+    findAllPaths(row,col,path,pathVis,ans,mat) {
+        let n = mat.length
+        if(row == n - 1 && col == n - 1) {
+            ans.push(path)
+            return
+        }
+        
+        let dRow = [-1,0,1,0]
+        let dCol = [0,1,0,-1]
+        let dir = ["U","R","D","L"]
+        for(let i = 0; i< 4; i++) {
+            let nRow = row + dRow[i]
+            let nCol = col + dCol[i]
+            if(nRow >= 0 && nCol >= 0 && nRow < n && nCol < n &&
+                !pathVis[nRow][nCol] && mat[nRow][nCol] === 1) {
+                pathVis[nRow][nCol] = 1
+                this.findAllPaths(nRow,nCol,path + dir[i],pathVis,ans,mat)
+                pathVis[nRow][nCol] = 0
+            }
+        }
+        
+    }
+    findPath(mat) {
+        let ans = []
+        let pathVis = new Array(mat.length).fill(0).map(() => new Array(mat[0].length).fill(0))
+        let n = mat.length
+        if (mat[0][0] == 0 || mat[n - 1][n - 1] == 0) return ans;
+        pathVis[0][0] = 1;
+        this.findAllPaths(0,0,"",pathVis,ans,mat)
+        
+        return ans
+    }
+}

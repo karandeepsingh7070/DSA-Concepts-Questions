@@ -534,3 +534,33 @@ class Solution {
         return false
     }
 }
+
+// NUMBER OF ISLANDS leetcode - 200
+
+var dfs = function(row,col,visited,grid,n,m) {
+    visited[row][col] = 1
+    let dRow = [-1,0,1,0]
+    let dCol = [0,1,0,-1]
+    for(let i = 0; i<4; i++) {
+        let nRow = row + dRow[i]
+        let nCol = col + dCol[i]
+            if(nRow >= 0 && nCol >= 0 && nRow < n && nCol < m && !visited[nRow][nCol] && grid[nRow][nCol] == "1") {
+            dfs(nRow,nCol,visited,grid,n,m)
+            }
+    }
+}
+var numIslands = function(grid) {
+    let n = grid.length
+    let m = grid[0].length
+    let visited = new Array(n).fill(0).map(() => new Array(m).fill(0))
+    let islandCnt = 0
+     for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+            if(grid[i][j] == "1" && !visited[i][j]){
+                islandCnt++   
+                dfs(i,j,visited,grid,n,m)
+            }
+        }
+     }
+    return islandCnt
+};
