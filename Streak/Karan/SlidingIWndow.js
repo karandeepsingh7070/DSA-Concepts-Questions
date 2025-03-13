@@ -17,3 +17,44 @@ var lengthOfLongestSubstring = function(s) {
     }
     return maxLen
 };
+
+// Max Consecutive Ones III - leetcode 1004 
+var longestOnes = function(nums, k) {
+    let maxLen = 0
+    let zCnt = 0
+    let l = 0
+    let r = 0
+
+    while(r < nums.length) {
+        if(nums[r] == 0) zCnt++
+        while(zCnt > k) {
+            if(nums[l] == 0) zCnt--
+            l++
+        }
+        maxLen = Math.max(maxLen,r - l + 1)
+        r++
+    }
+    return maxLen
+};
+
+// OPTIMIZED to o(N)
+
+var longestOnes = function(nums, k) {
+    let maxLen = 0
+    let zCnt = 0
+    let l = 0
+    let r = 0
+
+    while(r < nums.length) {
+        if(nums[r] == 0) zCnt++
+        if(zCnt > k) {
+            if(nums[l] === 0) zCnt--
+            l++
+        }
+        if(zCnt <= k) {
+            maxLen = Math.max(maxLen, r - l + 1)
+        }
+        r++
+    }
+    return maxLen
+};
