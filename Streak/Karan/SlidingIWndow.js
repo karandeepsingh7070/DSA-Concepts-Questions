@@ -58,3 +58,57 @@ var longestOnes = function(nums, k) {
     }
     return maxLen
 };
+
+// Fruit Into Baskets || Find length of the longest subarray containing atmost two distinct integers
+class Solution {
+    // Function to find the sum of minimum elements of all possible subarrays of fruits.
+    totalElements(arr) {
+        let maxLen = 0
+        let l = 0
+        let r = 0
+        let fruitMap = {}
+        
+        while(r < arr.length) {
+            fruitMap[arr[r]] = (fruitMap[arr[r]] || 0) + 1
+            while (Object.keys(fruitMap).length > 2) {
+                fruitMap[arr[l]] -= 1;
+                if (fruitMap[arr[l]] === 0) {
+                    delete fruitMap[arr[l]];
+                }
+                l++;
+            }
+            // if(Object.keys(fruitMap).length <= 2) {
+                maxLen = Math.max(maxLen, r - l + 1)
+                r++;
+            // }
+        }
+        return maxLen
+    }
+}
+
+// OPTIMIZE
+class Solution {
+    // Function to find the sum of minimum elements of all possible subarrays of fruits.
+    totalElements(arr) {
+        let maxLen = 0
+        let l = 0
+        let r = 0
+        let fruitMap = {}
+        
+        while(r < arr.length) {
+            fruitMap[arr[r]] = (fruitMap[arr[r]] || 0) + 1
+            if(Object.keys(fruitMap).length > 2) {
+                fruitMap[arr[l]] -= 1;
+                if (fruitMap[arr[l]] === 0) {
+                    delete fruitMap[arr[l]];
+                }
+                l++;
+            }
+            if(Object.keys(fruitMap).length <= 2) {
+                maxLen = Math.max(maxLen, r - l + 1)
+            }
+            r++;
+        }
+        return maxLen
+    }
+}
