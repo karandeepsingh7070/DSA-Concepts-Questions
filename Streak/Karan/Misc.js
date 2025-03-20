@@ -235,3 +235,131 @@ var removeDuplicates = function(s, k) {
     }
     return res
 }
+
+// Longest Valid Parentheses - leetcode 32
+var longestValidParentheses = function(s) {
+    let lCnt = 0
+    let rCnt = 0
+    let maxCnt = 0
+    let i = 0
+    while(i < s.length) {
+        if(s[i] === "(") {
+            lCnt++
+        }else rCnt++
+
+        if(lCnt === rCnt) {
+            maxCnt = Math.max(maxCnt, lCnt+rCnt)
+        }
+
+        if(lCnt < rCnt) {
+            lCnt = 0
+            rCnt = 0
+        }
+        i++
+    }
+    let j = s.length - 1
+    lCnt = 0
+    rCnt = 0
+
+    while(j >= 0) {
+
+        if(s[j] === "(") {
+            lCnt++
+        }else rCnt++
+        
+        if(lCnt === rCnt) {
+            maxCnt = Math.max(maxCnt, lCnt+rCnt)
+        }
+        if(lCnt > rCnt) {
+            lCnt = 0
+            rCnt = 0
+        }
+        j--
+    }
+    return maxCnt
+};
+
+// Find peak element
+var findPeakElement = function(nums) {
+
+    let low = 0
+    let high = nums.length - 1
+    let ans = -1
+    while(low <= high) {
+        let mid = Math.floor((low+high)/2)
+        
+        if(mid >= 0 && mid < nums.length && nums[mid] > nums[mid - 1] && nums[mid] > nums[mid + 1]) {
+            return mid
+        }
+
+        if(nums[mid] > nums[mid - 1]) {
+            low = mid + 1
+        }else {
+            high = mid -1
+        }
+    }
+}
+
+// Find Equilibrium
+class Solution {
+    findEquilibrium(arr) {
+        let high = arr.length
+        let leftSum = 0
+        let totalSum = 0
+        
+        for(let j = 0; j < high; j++) {
+            totalSum += arr[j]
+        }
+        
+        for(let i = 0; i< high; i++) {
+            totalSum -= arr[i] //right sum
+            if(leftSum === totalSum) return i
+            leftSum += arr[i]
+        }
+        return -1
+    }
+}
+
+// leetcode 1343
+var numOfSubarrays = function(arr, k, threshold) {
+    let sum = 0
+    let avgCnt = 0
+    let j = 0
+    let i = 0
+    while(j < arr.length) {
+        sum += arr[j]
+        while(j - i + 1 === k) {
+            if(Math.floor(sum/k) >= threshold) {
+                avgCnt++
+            }
+            sum -= arr[i]
+            i++
+        }
+        j++
+    }
+    return avgCnt
+};
+
+// count subarrays 
+countSubarray(arr, k) {
+       
+    let sum = 0
+    let preSumMap = new Map()
+    let maxCnt = 0
+    
+    for(let i = 0; i< arr.length; i++) {
+        sum += arr[i]
+        
+     //   if(sum == k) {
+     //       maxCnt++
+     //   }
+        let rem = sum - k
+        if(preSumMap.has(rem)) {
+            let len = i - preSumMap.get(rem)
+            maxCnt += preSumMap.get(rem);
+        }
+        if(!preSumMap.has(sum)) preSumMap.set(sum,i)
+    }
+    return maxCnt
+ }
+    
