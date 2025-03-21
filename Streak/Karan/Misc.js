@@ -362,4 +362,222 @@ countSubarray(arr, k) {
     }
     return maxCnt
  }
+// Max consecutive zweros with flip 
+function conZeroe3(nums, k) {
+
+    let j = 0
+    let i = 0
+    let maxLen = 0
+    let flipCnt = 0
+
+    while(j < nums.length) {
+        if(nums[j] == 0) flipCnt++
+
+        if(flipCnt > k) {
+            if(nums[i] == 0) flipCnt--
+            i++
+        }
+        if(flipCnt <= k) {
+            maxLen = Math.max(maxLen,j - i + 1)
+        }
+        j++
+    }
+    return maxLen
+}
+
+// Maximum Units on a Truck leetcode - 1710
+function maximumUnits(boxTypes, truckSize) {
+    boxTypes.sort((a,b) => b[1] - a[1])
+    let units = 0
     
+    for(let i = 0; i< boxTypes.length; i++) {
+        let boxesToTake = Math.min(boxTypes[i][0],truckSize)
+        units += boxesToTake * boxTypes[i][1]
+        truckSize -= boxesToTake
+
+        if(truckSize == 0) break
+    }
+
+    return units
+};
+    
+// Number of minimum platforms - intersection and sorting basis on time
+class Solution {
+    findPlatform(arr, dep) {
+        arr.sort((a,b) => a - b)
+        dep.sort((a,b) => a - b)
+        let i = 0
+        let j = 0
+        let platformCnt = 0
+        let cnt = 0
+        
+        while(i< arr.length) {
+            if(arr[i] > dep[j]) { //departure
+                cnt--
+                j++
+            }else {
+                cnt++
+                i++
+            }
+            platformCnt = Math.max(platformCnt,cnt)
+        }
+        return platformCnt
+    }
+}
+// Reduced String
+class CustomStack {
+    constructor() {
+        this.items = []
+    }
+    
+    push(ele) {
+        return this.items.push(ele)
+    }
+    pop() {
+        return this.items.pop()
+    }
+    isEmpty() {
+        return this.items.length === 0 
+    }
+    peek() {
+        return this.items.length ? this.items[this.items.length - 1] : null 
+    }
+}
+
+class Solution {
+    Reduced_String(k,s){
+        if (s.length === 0) return "";
+        let stk = new CustomStack()
+        let res = []
+        let j = 0
+        for(let char of s) {
+            if(!stk.isEmpty() && stk.peek()[0] === char) {
+                stk.peek()[1]++
+            }else {
+                stk.push([char,1])
+            }
+            if(stk.peek()[1] == k) {
+                stk.pop()
+            }
+        }
+        while(!stk.isEmpty()) {
+            let [char, freq] = stk.pop()
+            res.push(char.repeat(freq));
+        }
+        return res.reverse().join("")
+    }
+}
+
+// Bitonic Point
+class Solution {
+
+    findMaximum(arr) {
+        let maxEle = -1
+        let low = 0
+        let high = arr.length - 1
+        
+        while(low <= high) {
+            let mid = Math.floor((low+high)/2)
+            if(arr[mid] > arr[mid + 1]) {
+                maxEle = arr[mid]
+                high = mid - 1
+            }else {
+                low = mid+1
+            }
+        }
+        return maxEle
+    }
+}
+
+// Anagram together
+class Solution {
+    anagrams(arr) {
+        let sortMap = {}
+        let ans = []
+        for(let i = 0; i< arr.length; i++) {
+            let sortedChar = arr[i].split("").sort().join("")
+            let charArr = sortMap[sortedChar] || []
+                charArr.push(arr[i]);
+                sortMap[sortedChar] = charArr
+        }
+        return Object.values(sortMap)
+    }
+}
+
+// find max ones
+
+class Solution {
+    findMaxones(row) { //lower_bound
+        let lowerBound = -1
+        let low = 0
+        let high = row.length - 1
+        
+        while(low <= high) {
+            let mid = Math.floor((low+high)/2)
+            if(row[mid] == 1) {
+                lowerBound = mid
+                high = mid - 1
+            }else {
+                low = mid + 1
+            }
+        }
+        return lowerBound === -1 ? 0 : row.length - lowerBound;
+    }
+    rowWithMax1s(arr) {
+        let maxOnes = 0
+        let index = -1
+        
+        for(let i = 0; i < arr.length; i++) {
+            let onesCnt = this. findMaxones(arr[i])
+            if(onesCnt > maxOnes) {
+                maxOnes = onesCnt
+                index = i
+            }
+        }
+    return index
+    }
+}
+
+// isPalindrome LL
+class Solution {
+
+    reverseLL(head) {
+        let prev = null
+        let temp = head
+        
+        while(temp != null) {
+            let front = temp.next
+            temp.next = prev
+            prev = temp
+            temp = front
+        }
+        return prev
+    }
+    isPalindrome(head) {
+        if(head == null || head.next == null) return true
+        
+        let slow = head
+        let fast = head
+        
+        while(fast.next != null && fast.next.next != null) {
+            slow = slow.next
+            fast = fast.next.next
+        }
+        
+        // middle -> slow
+        let reversedLL = this.reverseLL(slow.next)
+        
+        let firstHead = head
+        let secondHead = reversedLL
+        
+        while(secondHead != null) {
+        if(firstHead.data != secondHead.data) {
+            this.reverseLL(reversedLL)
+            return false
+        }
+            firstHead = firstHead.next
+            secondHead = secondHead.next
+        }
+        return true
+    }
+}
