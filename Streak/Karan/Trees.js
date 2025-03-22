@@ -214,3 +214,46 @@ var zigzagLevelOrder = function(root) {
     }
     return ans
 };
+
+// find path to leaf node 
+class Solution {
+    /**
+    * @param Node root
+
+    * @returns number[][]
+    */
+    findPath(node,ans,ds) {
+        if(node == null) {
+            return true
+        }
+        ds.push(node.data)
+        let leftCheck = this.findPath(node.left,ans,ds)
+        let rightCheck = this.findPath(node.right,ans,ds)
+        if(leftCheck && rightCheck) {
+            ans.push([...ds])
+        }
+        ds.pop()
+        return false
+        
+        
+    }
+    Paths(root) {
+        let ans = []
+        let ds = []
+        this.findPath(root,ans,ds)
+        return ans
+    }
+}
+
+// Lowest Common Ancestor of a Binary Tree - leetcode 236
+var lowestCommonAncestor = function(root, p, q) {
+    if(root == null || root == p || root == q) return root
+    
+    let lNode = lowestCommonAncestor(root.left,p,q)
+    let rNode = lowestCommonAncestor(root.right,p,q)
+    if(lNode == null) {
+        return rNode
+    }else if(rNode == null) {
+        return lNode
+    }else return root
+};
