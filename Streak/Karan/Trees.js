@@ -257,3 +257,103 @@ var lowestCommonAncestor = function(root, p, q) {
         return lNode
     }else return root
 };
+
+// Construct Binary Tree from Inorder and Postorder Traversal - lletcode 106
+var constructTree = function(inorder, is, ie, postorder, ps, pe, hm) {
+    if(ps > pe || is > ie) return null
+    let root = new TreeNode(postorder[pe],null,null)
+    
+    let inRoot = hm[postorder[pe]]
+    let numLeft = inRoot - is
+
+    root.left = constructTree(inorder, is, inRoot - 1, postorder, ps, ps + numLeft - 1, hm)
+    root.right = constructTree(inorder, inRoot + 1, ie, postorder, ps + numLeft, pe - 1, hm)
+
+    return root
+}
+var buildTree = function(inorder, postorder) {
+    if(inorder == null || postorder === null || inorder.length != postorder.length) return null
+    let ans = []
+    let hm = {}
+    for(let i = 0; i< inorder.length; i++) {
+        hm[inorder[i]] = i
+    }
+    return constructTree(inorder, 0, inorder.length - 1, postorder, 0,postorder.length - 1, hm)
+};
+
+
+
+class CustomQueue {
+    constructor() {
+        this.items = []
+    }
+    enqueue(elm) {
+        return this.items.push(elm)
+    }
+    dequeue() {
+        return this.items.shift()
+    }
+    isEmpty() {
+        return this.items.length === 0
+    }
+    front() {
+        return this.items.length ? this.items[0] : null
+    }
+    size() {
+        return this.items.length
+    }
+}
+
+// Serialize and Deserialize Binary Tree - leetcode 297
+var serialize = function(root) {
+    if (root === null) return "#";
+
+    let serialized = "";
+    let q = new CustomQueue();
+    q.enqueue(root);
+
+    while (!q.isEmpty()) {
+        let size = q.size();
+        let level = "";
+        for (let i = 0; i < size; i++) {
+            let front = q.dequeue();
+            if (front === null) {
+                level += "#,";
+                continue;
+            }
+            level += front.val + ",";
+            q.enqueue(front.left);
+            q.enqueue(front.right);
+        }
+        serialized += level;
+    }
+    return serialized;
+};
+
+var deserialize = function(data) {
+    if (data === "" || data === "#") return null;
+    let deserialized = []
+    let values = data.split(",")
+    let root = new TreeNode(parseInt(values[0]))
+    let q = new CustomQueue();
+    q.enqueue(root);
+    let strI = 1
+    while (!q.isEmpty()) {
+        let front = q.dequeue();
+
+        if (values[strI] !== "#") {
+            let leftNode = new TreeNode(parseInt(values[strI]));
+            front.left = leftNode;
+            q.enqueue(leftNode);
+        }
+        strI++;
+
+        if (values[strI] !== "#") {
+            let rightNode = new TreeNode(parseInt(values[strI]));
+            front.right = rightNode;
+            q.enqueue(rightNode);
+        }
+        strI++;
+    }
+    return root
+};
