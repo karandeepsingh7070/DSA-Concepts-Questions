@@ -357,3 +357,31 @@ var deserialize = function(data) {
     }
     return root
 };
+
+// width of Tree
+var widthOfBinaryTree = function(root) {
+    if (!root) return 0;
+     let q = new CustomQueue();
+     q.enqueue({ node: root, lvl: 0 });
+     let res = 1;
+ 
+     while(!q.isEmpty()) {
+         let size = q.size()
+         let first = 0
+         let last = 0
+         let levelMin = q.front().lvl; // to normalize index
+         for(let i = 0; i < size; i++) {
+             let front = q.front();
+             let cur_id = front.lvl - levelMin;
+             if(i === 0) first = cur_id
+             if(i === size - 1) last = cur_id
+             q.dequeue()
+             if(front.node.left != null) q.enqueue({node : front.node.left, lvl : 2 * cur_id + 1})
+             if(front.node.right != null) q.enqueue({node : front.node.right, lvl : 2 * cur_id + 2})
+ 
+         }
+         res = Math.max(res,last - first + 1)
+     }
+ 
+     return res
+ };
