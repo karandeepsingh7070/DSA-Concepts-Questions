@@ -27,3 +27,20 @@ for(let i= 0; i<arr.length; i++){
     }
 }
 console.log("count: ", count)
+// Find all subarray whose sum is equal to k [Usinf Hashmap]
+var subarraySum = function(nums, k) {
+    const presumMap = new Map()
+        presumMap.set(0,1)
+        let sum = 0
+        let count = 0
+
+        for (let i=0; i<nums.length; i++){
+            sum += nums[i]
+            const remaining = sum - k
+            if(presumMap.has(remaining)){
+                count += presumMap.get(remaining)
+            }
+            presumMap.set(sum, (presumMap.get(sum) || 0) + 1)
+        }
+        return count
+};
