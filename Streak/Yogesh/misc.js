@@ -1,3 +1,10 @@
+// Subarray Sum Equals K - https://leetcode.com/problems/subarray-sum-equals-k/description/
+// Two Sum - https://leetcode.com/problems/two-sum/description/
+// Move Zeroes -  https://leetcode.com/problems/move-zeroes/
+// Sort Colors - https://leetcode.com/problems/sort-colors/description/
+
+
+
 // Type: Subarray [continious part of subarray]
 // - Find all subarray
 let arr = [1,13,4,8,1]
@@ -9,7 +16,8 @@ for(let i= 0; i<arr.length; i++){
         // console.log(`[${arr[i]},${arr[j]}]`)
     }
 }
-// - Find all subarray whose sum is equal to k
+
+// - Find all subarray whose sum is equal to k  - https://leetcode.com/problems/subarray-sum-equals-k/
 const k = 13
 arr = [1,13,4,8,1]
 let count = 0
@@ -27,7 +35,8 @@ for(let i= 0; i<arr.length; i++){
     }
 }
 console.log("count: ", count)
-// Find all subarray whose sum is equal to k [Usinf Hashmap]
+
+// Find all subarray whose sum is equal to k [Using Hashmap] - https://leetcode.com/problems/subarray-sum-equals-k/
 var subarraySum = function(nums, k) {
     const presumMap = new Map()
         presumMap.set(0,1)
@@ -44,3 +53,27 @@ var subarraySum = function(nums, k) {
         }
         return count
 };
+
+// Two Sum - https://leetcode.com/problems/two-sum/description/
+
+// Move Zeroes -  https://leetcode.com/problems/move-zeroes/
+var moveZeroes = function(nums) {
+    // i for zeros
+    // j for non-zeros
+    let i = 0 
+    for(i = 0; i < nums.length; i++)
+    {
+        if(nums[i] === 0){
+            break
+        }
+    }
+     for(let j = i+1; j < nums.length; j++)
+    {
+        if(nums[j] !== 0){
+            [nums[i],nums[j]] = [nums[j],nums[i]]
+            i++
+        }
+    }
+};
+
+// Sort Colors - https://leetcode.com/problems/sort-colors/description/
