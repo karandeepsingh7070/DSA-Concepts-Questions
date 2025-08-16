@@ -104,3 +104,57 @@ class Solution {
         
     }
 }
+
+
+class CustomQueue {
+    constructor() {
+        this.items = []
+    }
+    enqueue(item) {
+        return this.items.push(item)
+    }
+    dequeue() {
+        // Array.shift is O(n) instead using Array.splice is preferable
+        return this.items.shift()
+    }
+    isEmpty() {
+        return this.items.length === 0
+    }
+}
+
+// Coourse Schedule using Kahn's Algorithm - leetcode 207
+function convertToAdjList(n,list) {
+   let adjList = new Array(n).fill().map(() => []);
+    for (const [u, v] of list) {
+        adjList[u].push(v);
+    }
+    return adjList
+}
+var canFinish = function(numCourses, prerequisites) {
+    let adj = convertToAdjList(numCourses,prerequisites)
+    let inDegree = new Array(numCourses).fill(0)
+    for(let i = 0; i < numCourses; i++) {
+        for(const elm of adj[i]) {
+            inDegree[elm]++
+        }
+    }
+
+    let q = new CustomQueue()
+
+    for(let i = 0; i < numCourses; i++) {
+        if(inDegree[i] === 0) q.enqueue(i)
+    }
+    let topo = []
+
+    while(!q.isEmpty()) {
+        let front = q.dequeue()
+        topo.push(front)
+        for(const elm of adj[front]) {
+            inDegree[elm]--
+            if(inDegree[elm] === 0) {
+                q.enqueue(elm)
+            }
+        }
+    }
+    return topo?.length === numCourses ? true : false
+};
